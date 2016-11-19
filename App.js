@@ -14,8 +14,11 @@ class App extends React.Component {
          results: [],
          level: level,
          strict: strict,
-         totalScore: undefined
+         totalScore: undefined,
+         soundFon: true,
+         soundCheck: true
       };
+
    }
    next (val){
       var
@@ -44,7 +47,7 @@ class App extends React.Component {
          obj = randomQuection(val, self.state.strict);
 
       if (val=="!"){
-         self.setState({strict: !self.state.strict})
+         self.setState({strict: !self.state.strict});
          return;
       }
 
@@ -56,6 +59,20 @@ class App extends React.Component {
          boxNumers: obj.boxNumers,
          sum: obj.sum,
       })
+   }
+   soundMode(val){
+      var
+         self=this;
+      console.log(" val = ", val);
+      if(val=="1"){
+         self.setState({
+            soundFon: !self.state.soundFon
+         })
+      }else{
+         self.setState({
+            soundCheck: !self.state.soundCheck
+         })
+      }
    }
 
    // если 10 заданий выполнили ставим оценку
@@ -95,6 +112,7 @@ class App extends React.Component {
                <Resul state={state} />
                <Boxes state={state} onNext={this.next.bind(this)} />
                <Level state={state} inChoiceLevel={this.choiceLevel.bind(this)} />
+               <SoundMode state={state} onShangeSoundMode={this.soundMode.bind(this)}/>
             </div>
          </div>
        );
@@ -143,11 +161,14 @@ function Level (self){
    return (
       <div className="area">
          {arr.map(function(item, index){
-            var className = (parseInt(item)<=level)?"circle circleBlack":"circle";
+            var
+               className = (parseInt(item)<=level)?"circle circleBlack":"circle",
+               title = "Сложность "+item;
             if (self.state.strict && item=="!"){
                className="circle circleBlack";
+               title = "Строгий режим"
             }
-            return <div key={index} onClick={handleChoice} className={className}>{item}</div>
+            return <div key={index} onClick={handleChoice} className={className} title={title}>{item}</div>
          })}
       </div>
    )
@@ -170,19 +191,36 @@ function Score(self){
    var totalScore = self.state.totalScore,
       text,
       src = "img/"+totalScore+".png",
-      soundUrl = "mp3/viktorina.mp3";
+      soundUrl;
 
-   if(totalScore==5){
+   switch (totalScore) {
+      case 5:
+         text = "ОТЛИЧНО!";
+         soundUrl = "mp3/5viktorina.mp3";
+         break;
+      case 4:
+         text = "ХОРОШО!";
+         soundUrl = "mp3/4аanfary.mp3";
+         break;
+      case 3:
+         text = "НЕ ОЧЕНЬ";
+         soundUrl = "mp3/3spokoistvie.mp3";
+         break;
+      case 2:
+         text = "ПЛОХО!";
+         soundUrl = "mp3/2nuPogody.mp3";
+         break;
+      case 1:
+         soundUrl = "mp3/1kudaSPyztachkom.mp3";
+         text = "ОЧЕНЬ ПЛОХО!";
+         break;
+   }
+
+
+   if(self.state.soundCheck) {
       new Audio(soundUrl).play();
    }
 
-   switch (totalScore){
-      case 5: text = "ОТЛИЧНО!"; break;
-      case 4: text = "ХОРОШО!"; break;
-      case 3: text = "НЕ ОЧЕНЬ"; break;
-      case 2: text = "ПЛОХО!"; break;
-      case 1: text = "ОЧЕНЬ ПЛОХО!"; break;
-   }
 
    function handleClick(){
       self.onNext();
@@ -194,6 +232,33 @@ function Score(self){
             <img src={src}/>
             {text}
          </div>
+      </div>
+   )
+}
+
+function SoundMode(self) {
+   var
+      urlSoundFon = self.state.soundFon ? "img/sound.png" : "img/noSound.png",
+      urlCheckFon = self.state.soundCheck ? "img/sound.png" : "img/noSound.png"
+
+   if (self.state.soundFon) {
+      soundFon.play();
+   } else {
+      soundFon.pause();
+      soundFon.currentTime = 0;
+   }
+
+   function handleSound(e) {
+      var name = e.target.name;
+      if(self.onShangeSoundMode){
+         self.onShangeSoundMode(name);
+      }
+
+   }
+   return(
+      <div className="sound">
+         <img src={urlSoundFon} name = "1" onClick={handleSound}/>
+         <img src={urlCheckFon} name = "2" onClick={handleSound}/>
       </div>
    )
 }

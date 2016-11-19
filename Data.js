@@ -1,4 +1,8 @@
 'use strict';
+
+const soundFon = new Audio("mp3/chipAndDeil.mp3");
+
+
 // выдать вопрос по сложению до 10в зависимости от уровня
 // и варианты ответов из четырех, один тлько верный
 // если strict=true - то втором слагаемым долно быть определеннное число
@@ -28,3 +32,5 @@ function randomQuection(level = 1, strict = false) {
    };
 
 }
+
+

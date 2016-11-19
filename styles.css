@@ -83,15 +83,14 @@
 .result {
     width: 340px;
     margin: 0 auto;
-    margin-top: 32px;
-    background: darkblue;
+    margin-top: 26px;
     height: 1px;
 
 }
 
 .resultBox {
     float: left;
-    height: 1px;
+    height: 6px;
     width: 30px;
     margin: 0 2px;
     display: inline-block;
@@ -128,4 +127,16 @@
     top: 250px;
 }
 
+.sound {
+    position: absolute;
+    width: 90px;
+    height: 40px;
+    top: 15px;
+    left: 50%;
+    margin-left: 50px;
+    cursor: pointer;
+}
 
+.sound img {
+    margin-left: 10px
+}
