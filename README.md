@@ -1,4 +1,4 @@
-&#9822; [ДЕМО](http://fmap.ru/games/game/BeginCounter/index.html) 
+&#9822; [ДЕМО](http://fmap.ru/ggames/counter) 
 ======
 
 # AddCount
